@@ -30,6 +30,7 @@
         <li><a href="#missions"     class="nav-link" data-section="missions">Missions</a></li>
       </ul>
       <div class="nav-right">
+        <button class="btn-primary btn-sm" id="installBtn" hidden>Установить приложение</button>
         <button class="btn-primary btn-sm" onclick="scrollTo('universe')"><a href="https://eyes.nasa.gov/apps/solar-system/#/home"> Explore Universe</a></button>
         <button class="hamburger" id="hamburger" aria-label="Open menu">
           <span></span><span></span><span></span>
@@ -43,7 +44,8 @@
         <li><a href="#solar-system" onclick="closeMobile()">Solar System</a></li>
         <li><a href="#discoveries"  onclick="closeMobile()">Discover</a></li>
         <li><a href="#missions"     onclick="closeMobile()">Missions</a></li>
-        <li><button class="btn-primary" onclick="scrollTo('universe');closeMobile()">Explore Universe</button></li>
+        <li><button class="btn-primary" id="installBtnMobile" hidden onclick="installApp()">Установить приложение</button></li>
+        <li><button class="btn-primary" onclick="scrollTo('universe');closeMobile()"><a href="https://eyes.nasa.gov/apps/solar-system/#/home"> Explore Universe</a></button></li>
       </ul>
     </div>
   </header>

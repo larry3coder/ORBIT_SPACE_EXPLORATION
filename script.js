@@ -688,3 +688,61 @@ document.addEventListener('DOMContentLoaded', () => {
   initReveal();
   initGSAP();
 });
+// ============================================================
+// PWA INSTALL BUTTON
+// ============================================================
+let deferredInstallPrompt = null;
+
+function isIOS() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function showInstallButtons(show) {
+  ['installBtn', 'installBtnMobile'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.hidden = !show;
+  });
+}
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); // не показывать стандартный баннер Chrome
+  deferredInstallPrompt = e;
+  showInstallButtons(true);
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  showInstallButtons(false);
+});
+
+async function installApp() {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    const { outcome } = await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    if (outcome === 'accepted') showInstallButtons(false);
+    return;
+  }
+
+  // Если системного окна нет (iPhone, Safari или уже установлено)
+  if (isStandalone()) {
+    alert('Приложение уже установлено.');
+  } else if (isIOS()) {
+    alert('Чтобы установить приложение на iPhone: нажмите «Поделиться» внизу экрана и выберите «На экран «Домой»».');
+  } else {
+    alert('Чтобы установить приложение, откройте меню браузера и выберите «Установить приложение».');
+  }
+}
+
+// На iPhone события beforeinstallprompt нет, поэтому показываем кнопку сразу
+if (isIOS() && !isStandalone()) {
+  document.addEventListener('DOMContentLoaded', () => showInstallButtons(true));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('installBtn')?.addEventListener('click', installApp);
+});
