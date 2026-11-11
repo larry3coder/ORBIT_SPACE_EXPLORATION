@@ -74,7 +74,7 @@ const ORBITAL = [
 // ============================================================
 function scrollTo(id) {
   const el = document.getElementById(id);
-  if (!el) return;
+  if (!el) return;  
   const hh = document.getElementById('header')?.offsetHeight || 0;
   const top = el.getBoundingClientRect().top + window.scrollY - hh;
   window.scrollTo({ top, behavior: 'smooth' });
@@ -203,9 +203,11 @@ function initSolarSystem() {
 
   function getSize() {
     const w = canvas.offsetWidth;
+    const h = w < 600 ? Math.round(w * 1.0) : Math.min(580, Math.round(w * 0.55));
     canvas.width  = w;
-    canvas.height = Math.min(580, w * 0.55);
-    return { W: canvas.width, H: canvas.height };
+    canvas.height = h;
+    canvas.style.height = h + 'px';
+    return { W: w, H: h };
   }
 
   function draw() {
